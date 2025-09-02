@@ -1,0 +1,180 @@
+[tpot_bingo (1).html](https://github.com/user-attachments/files/22093061/tpot_bingo.1.html)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPOT Bingo</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .bingo-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 3px;
+            background: #333;
+            padding: 3px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .bingo-cell {
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            border: none;
+            padding: 15px 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bingo-cell:hover {
+            background: linear-gradient(145deg, #e0e0e0, #f5f5f5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .bingo-cell.clicked {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+            transform: scale(0.95);
+        }
+        
+        .bingo-cell.center {
+            background: linear-gradient(145deg, #FF6B6B, #FF5252);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .bingo-cell.center:hover {
+            background: linear-gradient(145deg, #FF6B6B, #FF5252);
+            transform: none;
+        }
+        
+        .bingo-cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .bingo-cell:hover::before {
+            left: 100%;
+        }
+        
+        @media (max-width: 600px) {
+            .bingo-cell {
+                font-size: 11px;
+                padding: 10px 5px;
+                min-height: 70px;
+            }
+            
+            .bingo-cell.center {
+                font-size: 16px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TPOT BINGO</h1>
+        <div class="bingo-grid">
+            <div class="bingo-cell" onclick="toggleCell(this)">Jhanas</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Trauma Release Therapy</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Internal Family Systems</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Alexander Technique</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Substack</div>
+            
+            <div class="bingo-cell" onclick="toggleCell(this)">Focusing</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Self-employment</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Zettelkasten</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Bioemotive</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">VIEW/AoA</div>
+            
+            <div class="bingo-cell" onclick="toggleCell(this)">Breathwork</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">lower case</div>
+            <div class="bingo-cell center">TPOT</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Ultraspeaking</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Ghibli</div>
+            
+            <div class="bingo-cell" onclick="toggleCell(this)">Meditation</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Somatic Work</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Shitposting</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Fetters</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Post-rationality</div>
+            
+            <div class="bingo-cell" onclick="toggleCell(this)">Psychedelics</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Mindfulness</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Shadow Work</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Astrology</div>
+            <div class="bingo-cell" onclick="toggleCell(this)">Enneagram</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleCell(cell) {
+            if (cell.classList.contains('center')) {
+                return; // Don't allow clicking the center cell
+            }
+            cell.classList.toggle('clicked');
+        }
+        
+        // Add some sparkle effect
+        document.querySelectorAll('.bingo-cell:not(.center)').forEach(cell => {
+            cell.addEventListener('click', function() {
+                if (this.classList.contains('clicked')) {
+                    // Create a little celebration effect
+                    this.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(0.95)';
+                    }, 150);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
