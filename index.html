@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,19 +102,71 @@
             left: 100%;
         }
         
-        @media (max-width: 600px) {
-            .bingo-cell {
-                font-size: 11px;
-                padding: 10px 5px;
-                min-height: 70px;
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
             }
             
-            .bingo-cell.center {
-                font-size: 16px;
+            .container {
+                padding: 20px;
+                border-radius: 10px;
             }
             
             h1 {
                 font-size: 2em;
+                margin-bottom: 20px;
+            }
+            
+            .bingo-cell {
+                font-size: 11px;
+                padding: 8px 4px;
+                min-height: 60px;
+                font-weight: 500;
+            }
+            
+            .bingo-cell.center {
+                font-size: 14px;
+            }
+            
+            .bingo-grid {
+                gap: 2px;
+                padding: 2px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                margin: 5px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 15px;
+            }
+            
+            .bingo-cell {
+                font-size: 9px;
+                padding: 6px 2px;
+                min-height: 50px;
+                line-height: 1.1;
+            }
+            
+            .bingo-cell.center {
+                font-size: 12px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .bingo-cell {
+                font-size: 8px;
+                padding: 4px 1px;
+                min-height: 45px;
+            }
+            
+            .bingo-cell.center {
+                font-size: 11px;
             }
         }
     </style>
