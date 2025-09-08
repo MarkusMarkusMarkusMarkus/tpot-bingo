@@ -1,14 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TPOT Bingo</title>
+    <title>TPOT.Bingo</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5f5f5;
             margin: 0;
             padding: 20px;
             min-height: 100vh;
@@ -24,6 +23,7 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             max-width: 600px;
             width: 100%;
+            position: relative;
         }
         
         h1 {
@@ -87,87 +87,91 @@
             transform: none;
         }
         
-        .bingo-cell::before {
-            content: '';
-            position: absolute;
+        .bingo-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(145deg, #FFD700, #FFA500);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            z-index: 1000;
+            border: 3px solid #fff;
+            display: none;
+        }
+        
+        .bingo-notification h2 {
+            font-size: 2em;
+            margin: 0;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .peak-popup {
+            position: fixed;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
         }
         
-        .bingo-cell:hover::before {
-            left: 100%;
+        .peak-content {
+            background: linear-gradient(145deg, #FF6B6B, #FF5252);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            max-width: 500px;
+            width: 90%;
+            border: 4px solid #fff;
         }
         
-        /* Mobile optimizations */
+        .peak-content h2 {
+            font-size: 2.5em;
+            margin: 0 0 20px 0;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            font-weight: bold;
+        }
+        
+        .peak-content p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            color: white;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+        
+        .peak-btn {
+            background: linear-gradient(145deg, #333, #555);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            .container {
-                padding: 20px;
-                border-radius: 10px;
-            }
-            
-            h1 {
-                font-size: 2em;
-                margin-bottom: 20px;
-            }
-            
-            .bingo-cell {
-                font-size: 11px;
-                padding: 8px 4px;
-                min-height: 60px;
-                font-weight: 500;
-            }
-            
-            .bingo-cell.center {
-                font-size: 14px;
-            }
-            
-            .bingo-grid {
-                gap: 2px;
-                padding: 2px;
-            }
+            .bingo-cell { font-size: 11px; padding: 8px 4px; min-height: 60px; }
+            .bingo-cell.center { font-size: 14px; }
         }
         
         @media (max-width: 480px) {
-            .container {
-                padding: 15px;
-                margin: 5px;
-            }
-            
-            h1 {
-                font-size: 1.8em;
-                margin-bottom: 15px;
-            }
-            
-            .bingo-cell {
-                font-size: 9px;
-                padding: 6px 2px;
-                min-height: 50px;
-                line-height: 1.1;
-            }
-            
-            .bingo-cell.center {
-                font-size: 12px;
-            }
-        }
-        
-        @media (max-width: 360px) {
-            .bingo-cell {
-                font-size: 8px;
-                padding: 4px 1px;
-                min-height: 45px;
-            }
-            
-            .bingo-cell.center {
-                font-size: 11px;
-            }
+            .bingo-cell { font-size: 9px; padding: 6px 2px; min-height: 50px; }
+            .bingo-cell.center { font-size: 12px; }
         }
     </style>
 </head>
@@ -175,58 +179,216 @@
     <div class="container">
         <h1>TPOT BINGO</h1>
         <div class="bingo-grid">
-            <div class="bingo-cell" onclick="toggleCell(this)">Jhanas</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Trauma Release Therapy</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Internal Family Systems</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Alexander Technique</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Substack</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Jhanas</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Trauma Release Therapy</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Internal Family Systems</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Alexander Technique</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Substack</div>
             
-            <div class="bingo-cell" onclick="toggleCell(this)">Focusing</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Self-employment</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Zettelkasten</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Bioemotive</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">VIEW/AoA</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Focusing</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Self-employment</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Zettelkasten</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Bioemotive</div>
+            <div class="bingo-cell" onclick="clickCell(this)">VIEW/AoA</div>
             
-            <div class="bingo-cell" onclick="toggleCell(this)">Breathwork</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">lower case</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Breathwork</div>
+            <div class="bingo-cell" onclick="clickCell(this)">lower case</div>
             <div class="bingo-cell center">TPOT</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Ultraspeaking</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Ghibli</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Ultraspeaking</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Ghibli</div>
             
-            <div class="bingo-cell" onclick="toggleCell(this)">Meditation</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Somatic Work</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Shitposting</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Fetters</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Post-rationality</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Meditation</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Somatic Work</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Shitposting</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Fetters</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Post-rationality</div>
             
-            <div class="bingo-cell" onclick="toggleCell(this)">Psychedelics</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Mindfulness</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Shadow Work</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Astrology</div>
-            <div class="bingo-cell" onclick="toggleCell(this)">Enneagram</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Psychedelics</div>
+            <div class="bingo-cell" onclick="clickCell(this)">…camp</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Shadow Work</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Astrology</div>
+            <div class="bingo-cell" onclick="clickCell(this)">Enneagram</div>
+        </div>
+    </div>
+
+    <div class="bingo-notification" id="bingoNotification">
+        <h2>🎉 BINGO! 🎉</h2>
+    </div>
+
+    <div class="peak-popup" id="peakPopup">
+        <div class="peak-content">
+            <h2>🧠💀</h2>
+            <p><strong>You've achieved peak TPOT status! It's time to touch grass 💀</strong></p>
+            <button class="peak-btn" onclick="closePeak()">I understand</button>
         </div>
     </div>
 
     <script>
-        function toggleCell(cell) {
-            if (cell.classList.contains('center')) {
-                return; // Don't allow clicking the center cell
-            }
+        let currentBingo = null;
+        let peakAchieved = false;
+        
+        function clickCell(cell) {
+            if (cell.classList.contains('center')) return;
+            
             cell.classList.toggle('clicked');
+            
+            if (cell.classList.contains('clicked')) {
+                cell.style.transform = 'scale(1.1)';
+                setTimeout(() => { cell.style.transform = 'scale(0.95)'; }, 150);
+            }
+            
+            setTimeout(() => { checkBingo(); checkPeakTPOT(); }, 100);
         }
         
-        // Add some sparkle effect
-        document.querySelectorAll('.bingo-cell:not(.center)').forEach(cell => {
-            cell.addEventListener('click', function() {
-                if (this.classList.contains('clicked')) {
-                    // Create a little celebration effect
-                    this.style.transform = 'scale(1.1)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(0.95)';
-                    }, 150);
+        function checkBingo() {
+            const cells = document.querySelectorAll('.bingo-cell');
+            const grid = [];
+            
+            for (let i = 0; i < 5; i++) {
+                grid[i] = [];
+                for (let j = 0; j < 5; j++) {
+                    const index = i * 5 + j;
+                    const cell = cells[index];
+                    grid[i][j] = cell.classList.contains('clicked') || (i === 2 && j === 2);
                 }
-            });
-        });
+            }
+            
+            let hasBingo = false;
+            
+            for (let i = 0; i < 5; i++) {
+                if (grid[i].every(cell => cell)) { hasBingo = true; break; }
+            }
+            
+            if (!hasBingo) {
+                for (let j = 0; j < 5; j++) {
+                    if (grid.every(row => row[j])) { hasBingo = true; break; }
+                }
+            }
+            
+            if (!hasBingo) {
+                if (grid.every((row, i) => row[i]) || grid.every((row, i) => row[4 - i])) {
+                    hasBingo = true;
+                }
+            }
+            
+            if (hasBingo && !currentBingo) {
+                currentBingo = true;
+                celebrateBingo();
+            } else if (!hasBingo) {
+                currentBingo = false;
+            }
+        }
+        
+        function celebrateBingo() {
+            const notification = document.getElementById('bingoNotification');
+            if (notification) {
+                notification.style.display = 'block';
+                setTimeout(() => { notification.style.display = 'none'; }, 4000);
+            }
+            makeConfetti();
+        }
+        
+        function makeConfetti() {
+            const colors = ['#FFD700', '#FF6B6B', '#4CAF50', '#2196F3', '#FF9800', '#9C27B0'];
+            
+            for (let i = 0; i < 240; i++) {
+                const piece = document.createElement('div');
+                piece.style.position = 'fixed';
+                piece.style.width = '8px';
+                piece.style.height = '8px';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.left = Math.random() * window.innerWidth + 'px';
+                piece.style.top = '-10px';
+                piece.style.zIndex = '999';
+                piece.style.pointerEvents = 'none';
+                document.body.appendChild(piece);
+                animateConfetti(piece);
+            }
+        }
+        
+        function animateConfetti(element) {
+            let pos = -10, rotation = 0;
+            const speed = Math.random() * 3 + 2;
+            const rotSpeed = Math.random() * 10 + 5;
+            
+            const animate = () => {
+                if (!element || !element.parentNode) return;
+                pos += speed;
+                rotation += rotSpeed;
+                element.style.top = pos + 'px';
+                element.style.transform = `rotate(${rotation}deg)`;
+                
+                if (pos < window.innerHeight + 20) {
+                    requestAnimationFrame(animate);
+                } else {
+                    if (element.parentNode) element.parentNode.removeChild(element);
+                }
+            };
+            
+            setTimeout(animate, Math.random() * 500);
+        }
+        
+        function checkPeakTPOT() {
+            const clickedCells = document.querySelectorAll('.bingo-cell.clicked').length;
+            
+            if (clickedCells === 24 && !peakAchieved) {
+                peakAchieved = true;
+                showPeakTPOT();
+            } else if (clickedCells < 24) {
+                peakAchieved = false;
+            }
+        }
+        
+        function showPeakTPOT() {
+            const popup = document.getElementById('peakPopup');
+            if (popup) popup.style.display = 'flex';
+            megaConfetti();
+        }
+        
+        function megaConfetti() {
+            const colors = ['#FFD700', '#FF6B6B', '#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#E91E63', '#00BCD4'];
+            
+            for (let i = 0; i < 500; i++) {
+                const piece = document.createElement('div');
+                piece.style.position = 'fixed';
+                piece.style.width = '12px';
+                piece.style.height = '12px';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.left = Math.random() * window.innerWidth + 'px';
+                piece.style.top = '-15px';
+                piece.style.zIndex = '1999';
+                piece.style.pointerEvents = 'none';
+                document.body.appendChild(piece);
+                animateMegaConfetti(piece);
+            }
+        }
+        
+        function animateMegaConfetti(element) {
+            let pos = -15, rotation = 0;
+            const speed = Math.random() * 4 + 2;
+            const rotSpeed = Math.random() * 15 + 10;
+            
+            const animate = () => {
+                if (!element || !element.parentNode) return;
+                pos += speed;
+                rotation += rotSpeed;
+                element.style.top = pos + 'px';
+                element.style.transform = `rotate(${rotation}deg)`;
+                
+                if (pos < window.innerHeight + 30) {
+                    requestAnimationFrame(animate);
+                } else {
+                    if (element.parentNode) element.parentNode.removeChild(element);
+                }
+            };
+            
+            setTimeout(animate, Math.random() * 1000);
+        }
+        
+        function closePeak() {
+            const popup = document.getElementById('peakPopup');
+            if (popup) popup.style.display = 'none';
+        }
     </script>
 </body>
 </html>
